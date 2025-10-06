@@ -1,6 +1,4 @@
-smolagents==1.15.0
-e2b_desktop==1.6.5
-Pillow
-huggingface_hub
-openai
-gradio_modal
+gradio==4.44.0
+requests==2.31.0
+Pillow==10.3.0
+python-dotenv==1.0.1
