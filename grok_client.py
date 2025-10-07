@@ -11,6 +11,7 @@ class GrokClient:
         self.api_key = api_key or GROK_API_KEY
         self.base_url = "https://api.x.ai/v1"
         self.model = "grok-beta"
+        self.historico = []
 
     def chat(
         self,
@@ -73,3 +74,41 @@ class GrokClient:
     def is_connected(self) -> bool:
         """Verifica se a API key está configurada"""
         return self.api_key and self.api_key != "COLOQUE_SUA_CHAVE_AQUI844c92bf-23fd-4053-83c8-ab4f62d1031e"
+
+    def limpar_historico(self):
+        """Limpa o histórico de conversação"""
+        self.historico = []
+
+
+def gerar_resposta(prompt: str, cliente: GrokClient = None) -> str:
+    """
+    Função principal para gerar resposta do Grok a partir de um prompt
+
+    Args:
+        prompt: Texto enviado pelo usuário
+        cliente: Instância do GrokClient (opcional, cria uma nova se não fornecido)
+
+    Returns:
+        Resposta do Grok em texto
+    """
+    if cliente is None:
+        cliente = GrokClient()
+
+    if not cliente.is_connected():
+        return "❌ Erro: Configure a GROK_API_KEY no arquivo config.py"
+
+    cliente.historico.append({"role": "user", "content": prompt})
+
+    system_message = {
+        "role": "system",
+        "content": "Você é Grok, um assistente de IA inteligente, prestativo e amigável. Responda de forma clara, objetiva e útil em português."
+    }
+
+    messages = [system_message] + cliente.historico[-10:]
+
+    response = cliente.chat(messages)
+    resposta_texto = cliente.get_response_text(response)
+
+    cliente.historico.append({"role": "assistant", "content": resposta_texto})
+
+    return resposta_texto
