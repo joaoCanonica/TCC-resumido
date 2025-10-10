@@ -378,8 +378,7 @@ with gr.Blocks(theme=gr.themes.Soft(), css=custom_css, title="💻 Seu Agente Vi
             "Diferença entre Machine Learning e Deep Learning"
         ],
         inputs=msg,
-        label="💡 Sugestões de Perguntas",
-        elem_classes="examples"
+        label="💡 Sugestões de Perguntas"
     )
 
     # Event handlers
